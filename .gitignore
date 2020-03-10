@@ -8,5 +8,6 @@
 .gitignore
 dbwallet.zip
 togithub*
-target/classes/com/example/fn/GetDiscount.class
-target/classes/com/example/fn/GetDiscount$Input.class
+target/*
+target/classes/com/example/fn/GetDiscountPool.class
+target/classes/com/example/fn/GetDiscountPool$Input.class
