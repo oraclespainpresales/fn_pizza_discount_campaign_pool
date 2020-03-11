@@ -19,8 +19,7 @@ public class GetDiscountPool {
     //private final String keyStorePasswd = System.getenv().get("KEYSTORE_PASSWORD");
     //private final String truStorePasswd = System.getenv().get("TRUSTSTORE_PASSWORD");
 
-    public GetDiscountPool(){
-        d1 = System.currentTimeMillis();
+    public GetDiscountPool(){        
         System.err.println("Setting up pool data source");
         //*********** FOR TESTING ONLY *************************************
         //System.err.println("ENV::" + dbUser);
@@ -67,6 +66,7 @@ public class GetDiscountPool {
             String demozone      = pizzaData.demozone.toUpperCase();
             String pizzaPrice    = pizzaData.pizzaPrice;
 
+            d1 = System.currentTimeMillis();
             //cast string input into a float
             System.err.println("inside Discount Function gigis fn function!!! ");
             float totalPaidValue  = Float.parseFloat(pizzaPrice);
