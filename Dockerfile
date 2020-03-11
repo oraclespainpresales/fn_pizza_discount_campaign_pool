@@ -15,7 +15,7 @@ ADD pom.xml /function/pom.xml
 ADD src /function/src
 ADD libs/* /function/target/libs/
 
-RUN ["mvn", "package"]
+#RUN ["mvn", "package"]
 
 RUN ["mvn", "package", \
     "dependency:copy-dependencies", \
@@ -33,7 +33,6 @@ WORKDIR /function
 
 COPY --from=build-stage /function/target/*.jar /function/
 COPY --from=build-stage /function/fnjre/ /function/fnjre/
-#COPY --from=build-stage /function/target/ /function/target/
 COPY --from=build-stage /function/wallet/ /function/wallet/
 COPY --from=cache-stage /libfnunixsocket.so /lib
 
