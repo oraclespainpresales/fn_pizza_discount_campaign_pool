@@ -4,10 +4,13 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 //import com.cedarsoftware.util.io.JsonWriter;
 import java.sql.*;
+import java.util.concurrent.TimeUnit;
 import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 
 public class GetDiscountPool {
+    private long d1;
+    private long d2;
     private PoolDataSource poolDataSource;
     private final String dbUser         = System.getenv().get("DB_USER");
     private final String dbPassword     = System.getenv().get("DB_PASSWORD");
@@ -17,6 +20,7 @@ public class GetDiscountPool {
     //private final String truStorePasswd = System.getenv().get("TRUSTSTORE_PASSWORD");
 
     public GetDiscountPool(){
+        d1 = System.currentTimeMillis();
         System.err.println("Setting up pool data source");
         //*********** FOR TESTING ONLY *************************************
         System.err.println("ENV::" + dbUser);
@@ -73,52 +77,46 @@ public class GetDiscountPool {
             conn.setAutoCommit(false);
 
             try {                
-                if (conn != null) {
-                    System.err.println("Connected to Oracle ATP DB Pool successfully");                
-                    //System.err.println("QUERY:: Driver getConnection");
+                System.err.println("Connected to Oracle ATP DB Pool successfully");                
+                //System.err.println("QUERY:: Driver getConnection");
 
-                    StringBuilder stb = new StringBuilder("SELECT NVL (");
-                    stb.append("(SELECT SUM(DISCOUNT) FROM CAMPAIGN WHERE ");
-                    stb.append("DEMOZONE LIKE ? ");
-                    stb.append("AND PAYMENTMETHOD LIKE ? ");
-                    stb.append("AND CURRENT_DATE BETWEEN DATE_BGN AND DATE_END+1 ");
-                    stb.append("AND MIN_AMOUNT <= ?)");
-                    stb.append(",0) as DISCOUNT FROM DUAL");
-                    PreparedStatement pstmt = conn.prepareStatement(stb.toString());
+                StringBuilder stb = new StringBuilder("SELECT NVL (");
+                stb.append("(SELECT SUM(DISCOUNT) FROM CAMPAIGN WHERE ");
+                stb.append("DEMOZONE LIKE ? ");
+                stb.append("AND PAYMENTMETHOD LIKE ? ");
+                stb.append("AND CURRENT_DATE BETWEEN DATE_BGN AND DATE_END+1 ");
+                stb.append("AND MIN_AMOUNT <= ?)");
+                stb.append(",0) as DISCOUNT FROM DUAL");
+                PreparedStatement pstmt = conn.prepareStatement(stb.toString());
 
-                    pstmt.setString(1,demozone);
-                    pstmt.setString(2,paymentMethod);
-                    pstmt.setFloat(3,Float.parseFloat(pizzaPrice));
-                    
-                    /*********** FOR TESTING ONLY *************************************
-                    System.err.println("QUERY::    " + stb.toString());
-                    System.err.println("QUERY:: 1. " + demozone);
-                    System.err.println("QUERY:: 2. " + paymentMethod);
-                    System.err.println("QUERY:: 3. " + pizzaPrice);
-                    */
-                    
-                    System.err.println("[" + pizzaData.toString() + "] - Pizza Price before discount: " + totalPaidValue + "$");
-                    resultSet = pstmt.executeQuery();
-                    if (resultSet.next()){                                                
-                        discount = Float.parseFloat(resultSet.getString("DISCOUNT"))/100;                        
-                        if (discount > 0){
-                            //apply calculation to float eg: discount = 10%
-                            totalPaidValue -=  (totalPaidValue*discount);
-                            System.err.println("[" + pizzaData.toString() + "] - discount: " + resultSet.getString("DISCOUNT") + "%");
-                        }
-                        else
-                            System.err.println ("[" + pizzaData.toString() + "] - No Discount campaign for this payment! [0%]");
+                pstmt.setString(1,demozone);
+                pstmt.setString(2,paymentMethod);
+                pstmt.setFloat(3,Float.parseFloat(pizzaPrice));
+                
+                /*********** FOR TESTING ONLY *************************************
+                System.err.println("QUERY::    " + stb.toString());
+                System.err.println("QUERY:: 1. " + demozone);
+                System.err.println("QUERY:: 2. " + paymentMethod);
+                System.err.println("QUERY:: 3. " + pizzaPrice);
+                */
+                
+                System.err.println("[" + pizzaData.toString() + "] - Pizza Price before discount: " + totalPaidValue + "$");
+                resultSet = pstmt.executeQuery();
+                if (resultSet.next()){                                                
+                    discount = Float.parseFloat(resultSet.getString("DISCOUNT"))/100;                        
+                    if (discount > 0){
+                        //apply calculation to float eg: discount = 10%
+                        totalPaidValue -=  (totalPaidValue*discount);
+                        System.err.println("[" + pizzaData.toString() + "] - discount: " + resultSet.getString("DISCOUNT") + "%");
                     }
-                    else {
-                        System.err.println ("[" + pizzaData.toString() + "] - No Discount campaign for this payment!");
-                    }
-                    System.err.println("[" + pizzaData.toString() + "] - total Pizza Price after discount: " + totalPaidValue + "$");
-                    exitValues = Float.toString(totalPaidValue);
+                    else
+                        System.err.println ("[" + pizzaData.toString() + "] - No Discount campaign for this payment! [0%]");
                 }
                 else {
-                    System.err.println("[" + pizzaData.toString() + "] - Error: DB Connection Problem"); 
-                    throw new NullPointerException("DB Connection Problem : NULL!");
+                    System.err.println ("[" + pizzaData.toString() + "] - No Discount campaign for this payment!");
                 }
+                System.err.println("[" + pizzaData.toString() + "] - total Pizza Price after discount: " + totalPaidValue + "$");
+                exitValues = Float.toString(totalPaidValue);                
             }     
             catch (Exception ex) {
                 StringWriter errors = new StringWriter();
@@ -135,7 +133,11 @@ public class GetDiscountPool {
             exitValues = pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString();;
         }
         finally{
-            return exitValues;
+            d2 = System.currentTimeMillis();
+            long diff = d2 - d1;
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+            System.err.println("[" + pizzaData.toString() + "] - Function execution time: " + Long.toString(seconds));             
         }
+        return exitValues;
     }
 }
