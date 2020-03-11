@@ -13,7 +13,7 @@ RUN unzip /function/dbwallet.zip -d /function/wallet/ && rm /function/dbwallet.z
 ENV MAVEN_OPTS -Dhttp.proxyHost= -Dhttp.proxyPort= -Dhttps.proxyHost= -Dhttps.proxyPort= -Dhttp.nonProxyHosts= -Dmaven.repo.local=/usr/share/maven/ref/repository
 ADD pom.xml /function/pom.xml
 ADD src /function/src
-ADD libs/* /function/target/libs/
+#ADD libs/* /function/target/libs/
 
 #RUN ["mvn", "package"]
 
