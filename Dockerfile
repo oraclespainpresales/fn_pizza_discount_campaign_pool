@@ -28,6 +28,7 @@ RUN ["mvn", "package", \
 RUN /usr/java/openjdk-12/bin/jlink --compress=2 --no-header-files --no-man-pages --strip-debug --output /function/fnjre --add-modules $(/usr/java/openjdk-12/bin/jdeps --ignore-missing-deps --print-module-deps --class-path '/function/target/*' /function/target/function.jar)
 
 FROM oraclelinux:8-slim
+RUN export BESU_OPTS="--add-opens java.base/sun.security.provider=ALL-UNNAMED"
 WORKDIR /function
 
 COPY --from=build-stage /function/target/*.jar /function/
