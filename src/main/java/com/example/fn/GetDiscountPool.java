@@ -64,7 +64,7 @@ public class GetDiscountPool {
             String pizzaPrice    = pizzaData.pizzaPrice;
 
             //cast string input into a float
-            System.err.println("inside Discount Function gigis fn function!!! ");
+            System.out.println("inside Discount Function gigis fn function!!! ");
             float totalPaidValue  = Float.parseFloat(pizzaPrice);
 
             System.setProperty("oracle.jdbc.fanEnabled", "false");
@@ -73,7 +73,7 @@ public class GetDiscountPool {
             conn.setAutoCommit(false);
 
             try {                
-                System.err.println("Connected to Oracle ATP DB Pool successfully");                
+                System.out.println("Connected to Oracle ATP DB Pool successfully");                
                 //System.err.println("QUERY:: Driver getConnection");
 
                 StringBuilder stb = new StringBuilder("SELECT NVL (");
@@ -96,22 +96,22 @@ public class GetDiscountPool {
                 System.err.println("QUERY:: 3. " + pizzaPrice);
                 */
                 
-                System.err.println("[" + pizzaData.toString() + "] - Pizza Price before discount: " + totalPaidValue + "$");
+                System.out.println("[" + pizzaData.toString() + "] - Pizza Price before discount: " + totalPaidValue + "$");
                 resultSet = pstmt.executeQuery();
                 if (resultSet.next()){                                                
                     discount = Float.parseFloat(resultSet.getString("DISCOUNT"))/100;                        
                     if (discount > 0){
                         //apply calculation to float eg: discount = 10%
                         totalPaidValue -=  (totalPaidValue*discount);
-                        System.err.println("[" + pizzaData.toString() + "] - discount: " + resultSet.getString("DISCOUNT") + "%");
+                        System.out.println("[" + pizzaData.toString() + "] - discount: " + resultSet.getString("DISCOUNT") + "%");
                     }
                     else
-                        System.err.println ("[" + pizzaData.toString() + "] - No Discount campaign for this payment! [0%]");
+                        System.out.println ("[" + pizzaData.toString() + "] - No Discount campaign for this payment! [0%]");
                 }
                 else {
-                    System.err.println ("[" + pizzaData.toString() + "] - No Discount campaign for this payment!");
+                    System.out.println ("[" + pizzaData.toString() + "] - No Discount campaign for this payment!");
                 }
-                System.err.println("[" + pizzaData.toString() + "] - total Pizza Price after discount: " + totalPaidValue + "$");
+                System.out.println("[" + pizzaData.toString() + "] - total Pizza Price after discount: " + totalPaidValue + "$");
                 exitValues = Float.toString(totalPaidValue);                
             }     
             catch (Exception ex) {
