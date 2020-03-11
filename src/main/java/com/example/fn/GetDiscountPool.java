@@ -8,7 +8,7 @@ import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 
 public class GetDiscountPool {
-    private PoolDataSource poolDataSource;
+    private final PoolDataSource poolDataSource;
     private final String dbUser         = System.getenv().get("DB_USER");
     private final String dbPassword     = System.getenv().get("DB_PASSWORD");
     private final String dbUrl          = System.getenv().get("DB_URL") + System.getenv().get("DB_SERVICE_NAME") + "?TNS_ADMIN=/function/wallet";
@@ -30,7 +30,7 @@ public class GetDiscountPool {
             poolDataSource.setPassword(dbPassword);
             poolDataSource.setConnectionPoolName("UCP_POOL");
         }
-        catch (SQLException e) {
+        catch (final SQLException e) {
             System.out.println("Pool data source error!");
             e.printStackTrace();
         }
@@ -43,7 +43,7 @@ public class GetDiscountPool {
         public String pizzaPrice;
 
         public String toString() {
-            StringBuilder stb = new StringBuilder("{");
+            final StringBuilder stb = new StringBuilder("{");
             stb.append("'demozone':'").append(demozone).append("'");
             stb.append("'paymentMethod':'").append(paymentMethod).append("'");
             stb.append("'pizzaPrice':'").append(pizzaPrice).append("'");
@@ -52,16 +52,16 @@ public class GetDiscountPool {
         }
     }
 
-    public String handleRequest(Input pizzaData) {
+    public String handleRequest(final Input pizzaData) {
         String exitValues    = "SALIDA::";
         ResultSet resultSet  = null;
         Connection conn      = null;
         float discount       = 0;
 
         try {
-            String paymentMethod = pizzaData.paymentMethod.toUpperCase();
-            String demozone      = pizzaData.demozone.toUpperCase();
-            String pizzaPrice    = pizzaData.pizzaPrice;
+            final String paymentMethod = pizzaData.paymentMethod.toUpperCase();
+            final String demozone      = pizzaData.demozone.toUpperCase();
+            final String pizzaPrice    = pizzaData.pizzaPrice;
 
             //cast string input into a float
             System.out.println("inside Discount Function gigis fn function!!! ");
@@ -76,14 +76,14 @@ public class GetDiscountPool {
                 System.out.println("Connected to Oracle ATP DB Pool successfully");                
                 //System.err.println("QUERY:: Driver getConnection");
 
-                StringBuilder stb = new StringBuilder("SELECT NVL (");
+                final StringBuilder stb = new StringBuilder("SELECT NVL (");
                 stb.append("(SELECT SUM(DISCOUNT) FROM CAMPAIGN WHERE ");
                 stb.append("DEMOZONE LIKE ? ");
                 stb.append("AND PAYMENTMETHOD LIKE ? ");
                 stb.append("AND CURRENT_DATE BETWEEN DATE_BGN AND DATE_END+1 ");
                 stb.append("AND MIN_AMOUNT <= ?)");
                 stb.append(",0) as DISCOUNT FROM DUAL");
-                PreparedStatement pstmt = conn.prepareStatement(stb.toString());
+                final PreparedStatement pstmt = conn.prepareStatement(stb.toString());
 
                 pstmt.setString(1,demozone);
                 pstmt.setString(2,paymentMethod);
@@ -114,8 +114,8 @@ public class GetDiscountPool {
                 System.out.println("[" + pizzaData.toString() + "] - total Pizza Price after discount: " + totalPaidValue + "$");
                 exitValues = Float.toString(totalPaidValue);                
             }     
-            catch (Exception ex) {
-                StringWriter errors = new StringWriter();
+            catch (final Exception ex) {
+                final StringWriter errors = new StringWriter();
                 ex.printStackTrace(new PrintWriter(errors));                 
                 exitValues = pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString();                
             }  
@@ -123,8 +123,8 @@ public class GetDiscountPool {
                 conn.close();
             }
         }
-        catch (Exception ex){
-            StringWriter errors = new StringWriter();
+        catch (final Exception ex){
+            final StringWriter errors = new StringWriter();
             ex.printStackTrace(new PrintWriter(errors));                 
             exitValues = pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString();;
         }
