@@ -9,8 +9,6 @@ import oracle.ucp.jdbc.PoolDataSource;
 import oracle.ucp.jdbc.PoolDataSourceFactory;
 
 public class GetDiscountPool {
-    private long d1;
-    private long d2;
     private PoolDataSource poolDataSource;
     private final String dbUser         = System.getenv().get("DB_USER");
     private final String dbPassword     = System.getenv().get("DB_PASSWORD");
@@ -66,7 +64,6 @@ public class GetDiscountPool {
             String demozone      = pizzaData.demozone.toUpperCase();
             String pizzaPrice    = pizzaData.pizzaPrice;
 
-            d1 = System.currentTimeMillis();
             //cast string input into a float
             System.err.println("inside Discount Function gigis fn function!!! ");
             float totalPaidValue  = Float.parseFloat(pizzaPrice);
@@ -131,12 +128,6 @@ public class GetDiscountPool {
             StringWriter errors = new StringWriter();
             ex.printStackTrace(new PrintWriter(errors));                 
             exitValues = pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString();;
-        }
-        finally{
-            d2 = System.currentTimeMillis();
-            long diff = d2 - d1;
-            long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
-            System.err.println("[" + pizzaData.toString() + "] - Function execution time: " + Long.toString(seconds));             
         }
         return exitValues;
     }
