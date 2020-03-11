@@ -23,9 +23,9 @@ public class GetDiscountPool {
         d1 = System.currentTimeMillis();
         System.err.println("Setting up pool data source");
         //*********** FOR TESTING ONLY *************************************
-        System.err.println("ENV::" + dbUser);
-        System.err.println("ENV::" + dbPassword);
-        System.err.println("ENV::" + dbUrl);
+        //System.err.println("ENV::" + dbUser);
+        //System.err.println("ENV::" + dbPassword);
+        //System.err.println("ENV::" + dbUrl);
         poolDataSource = PoolDataSourceFactory.getPoolDataSource();
         try {
             poolDataSource.setConnectionFactoryClassName("oracle.jdbc.pool.OracleDataSource");
