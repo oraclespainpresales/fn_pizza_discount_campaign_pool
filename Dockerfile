@@ -10,8 +10,9 @@ RUN yum install -y unzip
 COPY dbwallet.zip /function
 RUN unzip /function/dbwallet.zip -d /function/wallet/ && rm /function/dbwallet.zip
 
+#Database Resident Connection Pool (DRCP) in Autonomous Database supports easier and more efficient management of open connections
 RUN sed -i 's/high.atp.oraclecloud.com)/high.atp.oraclecloud.com)(SERVER=POOLED)/g' /function/wallet/tnsnames.ora
-RUN cat /function/wallet/tnsnames.ora
+#RUN cat /function/wallet/tnsnames.ora
 
 ENV MAVEN_OPTS -Dhttp.proxyHost= -Dhttp.proxyPort= -Dhttps.proxyHost= -Dhttps.proxyPort= -Dhttp.nonProxyHosts= -Dmaven.repo.local=/usr/share/maven/ref/repository
 ADD pom.xml /function/pom.xml
