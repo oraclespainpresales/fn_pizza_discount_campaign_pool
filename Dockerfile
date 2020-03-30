@@ -10,8 +10,8 @@ RUN yum install -y unzip
 COPY dbwallet.zip /function
 RUN unzip /function/dbwallet.zip -d /function/wallet/ && rm /function/dbwallet.zip
 
-RUN sed -i 's/high.atp.oraclecloud.com)/high.atp.oraclecloud.com)(SERVER=POOLED)/g' /function/tnsnames.ora
-RUN cat /function/tnsnames.ora
+RUN sed -i 's/high.atp.oraclecloud.com)/high.atp.oraclecloud.com)(SERVER=POOLED)/g' /function/wallet/tnsnames.ora
+RUN cat /function/wallet/tnsnames.ora
 
 ENV MAVEN_OPTS -Dhttp.proxyHost= -Dhttp.proxyPort= -Dhttps.proxyHost= -Dhttps.proxyPort= -Dhttp.nonProxyHosts= -Dmaven.repo.local=/usr/share/maven/ref/repository
 ADD pom.xml /function/pom.xml
