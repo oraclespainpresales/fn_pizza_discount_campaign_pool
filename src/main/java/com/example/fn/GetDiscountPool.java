@@ -117,7 +117,7 @@ public class GetDiscountPool {
             catch (final Exception ex) {
                 final StringWriter errors = new StringWriter();
                 ex.printStackTrace(new PrintWriter(errors));                 
-                exitValues = pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString();                
+                exitValues = "0";
             }  
             finally {
                 conn.close();
@@ -126,7 +126,7 @@ public class GetDiscountPool {
         catch (final Exception ex){
             final StringWriter errors = new StringWriter();
             ex.printStackTrace(new PrintWriter(errors));                 
-            exitValues = pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString();;
+            exitValues = "0";
         }
         return exitValues;
     }
