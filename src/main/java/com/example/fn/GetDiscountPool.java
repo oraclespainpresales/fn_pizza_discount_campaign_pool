@@ -130,7 +130,7 @@ public class GetDiscountPool {
             final StringWriter errors = new StringWriter();
             ex.printStackTrace(new PrintWriter(errors));     
             System.err.println("START ADB PLEASE!!!!!!");            
-            System.err.println(pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString())
+            System.err.println(pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString());
             //exitValues = pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString();
             exitValues = pizzaData.pizzaPrice;
         }
