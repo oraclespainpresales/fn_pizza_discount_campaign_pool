@@ -116,8 +116,9 @@ public class GetDiscountPool {
             }     
             catch (final Exception ex) {
                 final StringWriter errors = new StringWriter();
-                ex.printStackTrace(new PrintWriter(errors));                 
-                exitValues = "0";
+                ex.printStackTrace(new PrintWriter(errors));    
+                //No discount - error occurred
+                exitValues = Float.parseFloat(pizzaPrice);
             }  
             finally {
                 conn.close();
@@ -126,7 +127,8 @@ public class GetDiscountPool {
         catch (final Exception ex){
             final StringWriter errors = new StringWriter();
             ex.printStackTrace(new PrintWriter(errors));                 
-            exitValues = "0";
+            //No discount - error occurred
+            exitValues = Float.parseFloat(pizzaPrice);
         }
         return exitValues;
     }
