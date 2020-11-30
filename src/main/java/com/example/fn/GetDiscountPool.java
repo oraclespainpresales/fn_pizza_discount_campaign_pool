@@ -116,8 +116,10 @@ public class GetDiscountPool {
             }     
             catch (final Exception ex) {
                 final StringWriter errors = new StringWriter();
-                ex.printStackTrace(new PrintWriter(errors));    
-                //No discount - error occurred
+                ex.printStackTrace(new PrintWriter(errors)); 
+                System.err.println("START ADB PLEASE!!!!!!");
+                System.err.println(pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString());
+                //exitValues = pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString();                
                 exitValues = pizzaData.pizzaPrice;
             }  
             finally {
@@ -126,8 +128,10 @@ public class GetDiscountPool {
         }
         catch (final Exception ex){
             final StringWriter errors = new StringWriter();
-            ex.printStackTrace(new PrintWriter(errors));                 
-            //No discount - error occurred
+            ex.printStackTrace(new PrintWriter(errors));     
+            System.err.println("START ADB PLEASE!!!!!!");            
+            System.err.println(pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString())
+            //exitValues = pizzaData.toString() + " - Error: " + ex.toString() + "\n" + ex.getMessage() + errors.toString();
             exitValues = pizzaData.pizzaPrice;
         }
         return exitValues;
